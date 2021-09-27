@@ -19,4 +19,3 @@ quiz.forEach(quizItem => {
 
 console.log(quiz[0].questions[0].question);
 console.log(quiz[0].questions[0].answers[0]);
-console.log(number);

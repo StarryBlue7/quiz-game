@@ -3,6 +3,7 @@
     --color-text: rgb(169, 235, 255);
     --main-text-color: white;
     --content-padding: 20px;
+    --bordering: white solid 5px;
 }
 
 html {
@@ -14,10 +15,13 @@ body {
     font-size: 24px;
     color: var(--main-text-color);
     background-color: rgb(0, 86, 156);
+    height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 1vh;
 }
 
 h1 {
@@ -26,7 +30,6 @@ h1 {
 
 h2 {
     font-size: 200%;
-    width: 100%;
 }
 
 a {
@@ -34,8 +37,9 @@ a {
     color: var(--color-text);
 }
 
-* {
-    border: white solid 5px;
+.bordered {
+    border: var(--bordering);
+    border-radius: 20px;
 }
 
 header {
@@ -47,7 +51,10 @@ main {
     width: 70vw;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    border-radius: 20px;
+    padding: 10px;
+    gap: 10px;
 }
 
 #top-bar {
@@ -55,11 +62,60 @@ main {
     flex-flow: row wrap;
     justify-content: space-between;
     width: 100%;
+    gap: 10px;
+}
+
+#view-high-scores, #message-box, #timer-box {
+    padding: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#view-high-scores, #timer-box {
+    flex: 0 1 20%;
+}
+
+#message-box {
+    flex: 1 0 30%;
+    font-size: 150%;
+}
+
+#time {
+    font-size: 125%;
+}
+
+#quiz-box {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 40px;
+}
+
+#question-box {
+    padding: 20px;
+    flex: 0 1 50%;
 }
 
 #answer-box {
-    font-size: 150%;
+    list-style: inside upper-alpha;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    align-content: space-between;
+}
+
+#answer-box > li {
+    width: 47%;
+    border: white solid 5px;
+    border-radius: 20px;
+    padding: 5px;
+    margin-bottom: 20px;
+    font-size: 150%;
 }
 
 #game-messages {

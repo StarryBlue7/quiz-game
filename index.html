@@ -12,21 +12,29 @@
 
     <body>
         <header>
-            <h1>Quiz Game!</h1>
+            <h1><em id="theme"></em>Quiz Game!</h1>
             
         </header>
 
-        <main>
+        <main class="bordered">
             <section id="top-bar">
-                <aside id="view-high-scores">View High Scores</aside>
-                <aside id="timer-box">Timer</aside>
+                <aside id="view-high-scores" class="bordered">View High Scores</aside>
+                <section id="message-box" class="bordered">Messages</section>
+                <aside id="timer-box" class="bordered">
+                    <p>Time</p>
+                    <section id="time">160s</section>
+                </aside>
             </section>
 
-            <!-- <section id="quiz-box"> -->
-                <h2 id="question-box">Question Box</h2>
-                <article id="answer-box">Answers</article>
-                <summary id="message-box">Game Messages</summary>
-            <!-- </section> -->
+            <section id="quiz-box" class="bordered">
+                <h2 id="question-box" class="bordered">Just what the heck is JavaScript, anyway?</h2>
+                <ol id="answer-box">
+                    <li>Duh</li>
+                    <li>Uh</li>
+                    <li>Huh?</li>
+                    <li>Meh.</li>
+                </ol>
+            </section>
         </main>
 
         <script type="text/javascript" src="./assets/quiz-questions.js"></script>
