@@ -65,7 +65,7 @@ main {
     gap: 10px;
 }
 
-#view-high-scores, #message-box, #timer-box {
+#view-high-scores, #message-box, #timer-box, #points-box {
     padding: 5px;
     text-align: center;
     display: flex;
@@ -74,8 +74,12 @@ main {
     align-items: center;
 }
 
-#view-high-scores, #timer-box {
+#view-high-scores {
     flex: 0 1 20%;
+}
+
+#points-box, #timer-box {
+    flex: 0 1 10%;
 }
 
 #message-box {
@@ -83,7 +87,7 @@ main {
     font-size: 150%;
 }
 
-#time {
+#time, #points {
     font-size: 125%;
 }
 
