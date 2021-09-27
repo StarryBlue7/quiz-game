@@ -4,7 +4,15 @@ const quiz = [
         "questions": [
             {
                 "question": "JavaScript question 1",
-                "answers": ["JS Answer 1", "JS Answer 2", "JS Answer 3", "JS Answer 4"]
+                "answers": ["JS Answer 11", "JS Answer 12", "JS Answer 13", "JS Answer 14"]
+            },
+            {
+                "question": "JavaScript question 2",
+                "answers": ["JS Answer 21", "JS Answer 22", "JS Answer 23", "JS Answer 24"]
+            },
+            {
+                "question": "JavaScript question 3",
+                "answers": ["JS Answer 31", "JS Answer 32", "JS Answer 33", "JS Answer 34"]
             },
             {
                 "question": "Are squirrels the best?",
