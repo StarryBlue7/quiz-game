@@ -42,6 +42,10 @@ a {
     border-radius: 20px;
 }
 
+.hidden {
+    display: none;
+}
+
 header {
     text-align: center;
     width: 100%;
@@ -95,14 +99,22 @@ main {
     height: 60vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    /* font-size: 300%; */
     padding: 20px;
     gap: 40px;
 }
 
 #question-box {
     font-size: 200%;
+    text-align: left;
     padding: 20px;
     flex: 0 1 50%;
+}
+
+button {
+    display: block;
 }
 
 #answer-box {
@@ -121,6 +133,7 @@ main {
     padding: 5px;
     margin-bottom: 20px;
     font-size: 150%;
+    text-align: left;
 }
 
 #game-messages {
