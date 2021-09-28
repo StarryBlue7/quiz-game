@@ -115,7 +115,7 @@ main {
 
 button {
     display: block;
-    font-size: inherit;
+    font-size: 150%;
     width: 100%;
     margin-bottom: 20px;
     color: var(--main-theme-color);
@@ -158,6 +158,7 @@ button {
     color: var(--main-theme-color);
     text-align: center;
     padding: 20px;
+    overflow-y: scroll;
 }
 
 #scoreboard > h2 {
@@ -166,5 +167,14 @@ button {
 
 #scoreboard > table {
     width: 100%;
+    margin-bottom: 50px;
+}
 
+th, tr {
+    border-bottom: 2px solid var(--main-theme-color);
+    height: 40px;
+}
+
+td {
+    vertical-align: middle;
 }

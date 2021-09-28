@@ -10,7 +10,7 @@ const timeMultiplier = 1;
 const questionSpeed = 500;
 
 var category = 0;
-var score = 0;
+var score;
 var attempts;
 var difficultyMode = 0;
 var playing = false;
@@ -29,7 +29,7 @@ const points = document.getElementById("points");
 const quizBox = document.getElementById("quiz-box");
 const questionBox = document.getElementById("question-box");
 const answerBox = document.getElementById("answer-box");
-const startButton = document.getElementById("start");
+// const startButton = document.getElementById("start");
 const scoreboard = document.getElementById("scoreboard");
 
 function init() {
@@ -37,6 +37,7 @@ function init() {
     writePoints();
     setTimer();
     writeTime();
+    writeRules();
 };
 
 function writeTheme() {
@@ -51,16 +52,24 @@ function writeTime() {
     timeClock.textContent = time;
 };
 
+function writeRules() {
+    questionBox.innerHTML = "<button id=\"start\" class=\"bordered\">Start</button>Click 'Start' for a new game!"
+}
+
 viewScores.addEventListener("click", showScores);
-startButton.addEventListener("click", startGame);
+// startButton.addEventListener("click", startGame);
 quizBox.addEventListener("click", function(event) {
+    event.stopPropagation();
     let button = event.target;
-    if (button.matches("button") && button.getAttribute("id") === "save-score") {
+    if (button.matches("button") && button.getAttribute("id") === "start") {
+        startGame();
+    } else if (button.matches("button") && button.getAttribute("id") === "save-score") {
         let initials = prompt("Enter initials:").slice(0,2).toUpperCase();
         if (initials !== null) {
             saveScore(initials);
         }
     } else if (button.matches("button") && button.getAttribute("id") === "restart") {
+        clearEndCard();
         hideQuiz(false);
         init();
     }
@@ -68,7 +77,9 @@ quizBox.addEventListener("click", function(event) {
 })
 
 function startGame() {
+    // event.stopPropagation();
     score = 0;
+    isWin = false;
     setTimer();
     hideQuiz(false);
     questionOrder = randomOrder(quiz[category].questions);
@@ -127,10 +138,11 @@ function startTimer() {
 };
 
 answerBox.addEventListener("click", function(event) {
+    event.stopPropagation();
     let dataCheck = event.target.getAttribute("data-check");
-    if (dataCheck == "true") {
+    if (playing === true && dataCheck == "true") {
         rightAnswer();
-    } else if (dataCheck == "false") {
+    } else if (playing === true && dataCheck == "false") {
         wrongAnswer();
     }
 });
@@ -170,6 +182,9 @@ function gameMessage(isCorrect) {
     } else {
         message.innerText = "Wrong! -" + timeLoss + "s"
     }
+    setTimeout(() => {
+        message.innerText = " ";
+    }, 2000);
 }
 
 function endRound() {
@@ -222,7 +237,7 @@ function gameOver() {
 };
 
 function endCard(isWin) {
-    let endMsg = document.createElement("h2");
+    let endMsg = document.createElement("h1");
     if (isWin === true) {
         endMsg.innerText = "You Win!";
     } else {
@@ -231,22 +246,38 @@ function endCard(isWin) {
     endMsg.setAttribute("class", "bordered");
     quizBox.appendChild(endMsg);
 
-    let finalScore = document.createElement("h3");
+    let finalScore = document.createElement("h2");
     finalScore.innerText = "Final Score: " + score + " pts";
     finalScore.setAttribute("class", "bordered");
     quizBox.appendChild(finalScore);
 
-    let saveBtn = document.createElement("button");
-    saveBtn.innerText = "Save Score?";
-    saveBtn.setAttribute("id", "save-score");
-    saveBtn.setAttribute("class", "bordered");
+    let saveBtn = buildBtn("Save Score?", "save-score", "bordered");
+    // let saveBtn = document.createElement("button");
+    // saveBtn.innerText = "Save Score?";
+    // saveBtn.setAttribute("id", "save-score");
+    // saveBtn.setAttribute("class", "bordered");
     quizBox.appendChild(saveBtn); 
 
-    let restartBtn = document.createElement("button");
-    restartBtn.innerText = "Restart";
-    restartBtn.setAttribute("id", "restart");
-    restartBtn.setAttribute("class", "bordered");
+    let restartBtn = buildBtn("Restart", "restart", "bordered");
+    // let restartBtn = document.createElement("button");
+    // restartBtn.innerText = "Restart";
+    // restartBtn.setAttribute("id", "restart");
+    // restartBtn.setAttribute("class", "bordered");
     quizBox.appendChild(restartBtn); 
+}
+
+function clearEndCard() {
+    while (quizBox.children[3]) {
+        quizBox.removeChild(quizBox.children[3]);
+    };
+}
+
+function buildBtn(text, id, addClass) {
+    let btn = document.createElement("button");
+    btn.innerText = text;
+    btn.setAttribute("id", id);
+    btn.setAttribute("class", addClass);
+    return btn;
 }
 
 function hideQuiz(toHidden) {
@@ -267,8 +298,8 @@ function hideScoreboard(toHidden) {
     } 
 };
 
-function showScores() {
-    playing = false;
+function showScores(event) {
+    event.stopPropagation();
     hideScoreboard(false);
     updateScores();
 };
@@ -281,7 +312,7 @@ function updateScores() {
             return b.score - a.score;
         })
 
-        let scoreTable = "<table><tr><td>Initials</td><td>Difficulty</td><td>Score</td>"
+        let scoreTable = "<table><tr><th>Initials</th><th>Difficulty</th><th>Score</th>"
         scoreList.forEach(function callbackFn(entry) {
             scoreTable += "<tr>";
             scoreTable += "<td>" + entry.initials + "</td>";
@@ -294,6 +325,14 @@ function updateScores() {
     } else {
         scoreList = [];
     }
+
+    let closeBtn = buildBtn("Close", "closeScores", "bordered");
+    // let closeBtn = document.createElement("button");
+    // closeBtn.innerText = "Close";
+    // closeBtn.setAttribute("id", "closeScores");
+    // closeBtn.setAttribute("class", "bordered");
+    scoreboard.appendChild(closeBtn); 
+
     localStorage.setItem("scoreList", JSON.stringify(scoreList));
 }
 
@@ -307,6 +346,7 @@ function saveScore(initials) {
     scoreList.push(newScore);
     localStorage.setItem("scoreList", JSON.stringify(scoreList));
     updateScores();
+    score = 0;
 }
 
 init();
