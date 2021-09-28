@@ -30,10 +30,11 @@ const quizBox = document.getElementById("quiz-box");
 const questionBox = document.getElementById("question-box");
 const answerBox = document.getElementById("answer-box");
 const scoreboard = document.getElementById("scoreboard");
-
+const bgMusic = new Audio("./assets/sounds/bgMusic.wav");
 
 function init() {
     writeTheme();
+    score = 0;
     writePoints();
     setTimer();
     writeTime();
@@ -76,6 +77,8 @@ quizBox.addEventListener("click", function(event) {
 })
 
 function startGame() {
+    bgMusic.play();
+
     score = 0;
     isWin = false;
     setTimer();
@@ -252,6 +255,9 @@ function gameOver() {
 };
 
 function endCard(isWin) {
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+
     let endMsg = document.createElement("h1");
     if (isWin === true) {
         endMsg.innerText = "You Win!";
@@ -350,6 +356,7 @@ function saveScore(initials) {
     localStorage.setItem("scoreList", JSON.stringify(scoreList));
     updateScores();
     score = 0;
+    writePoints();
 
     let saveScore = new Audio("./assets/sounds/saveHS.wav");
     saveScore.play();
