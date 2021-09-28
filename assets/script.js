@@ -29,8 +29,8 @@ const points = document.getElementById("points");
 const quizBox = document.getElementById("quiz-box");
 const questionBox = document.getElementById("question-box");
 const answerBox = document.getElementById("answer-box");
-// const startButton = document.getElementById("start");
 const scoreboard = document.getElementById("scoreboard");
+
 
 function init() {
     writeTheme();
@@ -57,7 +57,6 @@ function writeRules() {
 }
 
 viewScores.addEventListener("click", showScores);
-// startButton.addEventListener("click", startGame);
 quizBox.addEventListener("click", function(event) {
     event.stopPropagation();
     let button = event.target;
@@ -77,7 +76,6 @@ quizBox.addEventListener("click", function(event) {
 })
 
 function startGame() {
-    // event.stopPropagation();
     score = 0;
     isWin = false;
     setTimer();
@@ -150,7 +148,10 @@ answerBox.addEventListener("click", function(event) {
 function rightAnswer() {
     playing = false;
     score += attemptPoints[attemptsAllowed - attempts];
-        
+
+    let bell = new Audio("./assets/sounds/rightBell.wav");
+    bell.play();
+
     writePoints();
     gameMessage(true);
     revealAnswer();
@@ -158,11 +159,19 @@ function rightAnswer() {
 
 function wrongAnswer() {
     time -= timeLoss;
+
+    let buzzer = new Audio("./assets/sounds/wrongBuzzer2.wav");
+    buzzer.play();
+    
     gameMessage(false);
     if (attempts > 1) {
         attempts--;
     } else {
         playing = false;
+
+        let fail = new Audio("./assets/sounds/failSound.wav");
+        fail.play();
+
         revealAnswer();
     }
 };
@@ -224,6 +233,9 @@ function winGame() {
     let timeBonus = time * timeMultiplier;
     score += timeBonus;
     message.innerText = "Time Bonus: " + timeBonus + " pts!"
+
+    let winSound = new Audio("./assets/sounds/gameWin.wav");
+    winSound.play();
     
     hideQuiz(true);
     clearAnswers();
@@ -231,6 +243,9 @@ function winGame() {
 }
 
 function gameOver() {
+    let loseSound = new Audio("./assets/sounds/gameLose.wav");
+    loseSound.play();
+
     hideQuiz(true);
     clearAnswers();
     endCard(false);
@@ -252,17 +267,9 @@ function endCard(isWin) {
     quizBox.appendChild(finalScore);
 
     let saveBtn = buildBtn("Save Score?", "save-score", "bordered");
-    // let saveBtn = document.createElement("button");
-    // saveBtn.innerText = "Save Score?";
-    // saveBtn.setAttribute("id", "save-score");
-    // saveBtn.setAttribute("class", "bordered");
     quizBox.appendChild(saveBtn); 
 
     let restartBtn = buildBtn("Restart", "restart", "bordered");
-    // let restartBtn = document.createElement("button");
-    // restartBtn.innerText = "Restart";
-    // restartBtn.setAttribute("id", "restart");
-    // restartBtn.setAttribute("class", "bordered");
     quizBox.appendChild(restartBtn); 
 }
 
@@ -327,10 +334,6 @@ function updateScores() {
     }
 
     let closeBtn = buildBtn("Close", "closeScores", "bordered");
-    // let closeBtn = document.createElement("button");
-    // closeBtn.innerText = "Close";
-    // closeBtn.setAttribute("id", "closeScores");
-    // closeBtn.setAttribute("class", "bordered");
     scoreboard.appendChild(closeBtn); 
 
     localStorage.setItem("scoreList", JSON.stringify(scoreList));
@@ -347,6 +350,9 @@ function saveScore(initials) {
     localStorage.setItem("scoreList", JSON.stringify(scoreList));
     updateScores();
     score = 0;
+
+    let saveScore = new Audio("./assets/sounds/saveHS.wav");
+    saveScore.play();
 }
 
 init();
