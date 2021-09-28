@@ -4,6 +4,7 @@
     --main-text-color: white;
     --content-padding: 20px;
     --bordering: white solid 5px;
+    --main-theme-color: rgb(0, 86, 156);
 }
 
 html {
@@ -14,7 +15,7 @@ body {
     font-family: Garamond, Verdana, Geneva, Tahoma, sans-serif;
     font-size: 24px;
     color: var(--main-text-color);
-    background-color: rgb(0, 86, 156);
+    background-color: var(--main-theme-color);
     height: 100vh;
     width: 100vw;
     display: flex;
@@ -101,7 +102,6 @@ main {
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    /* font-size: 300%; */
     padding: 20px;
     gap: 40px;
 }
@@ -115,6 +115,12 @@ main {
 
 button {
     display: block;
+    font-size: inherit;
+    width: 100%;
+    margin-bottom: 20px;
+    color: var(--main-theme-color);
+    background-color: lightgray;
+    font-family: inherit;
 }
 
 #answer-box {
@@ -139,4 +145,21 @@ button {
 #game-messages {
     text-align: center;
     width: 100%;
+}
+
+#scoreboard {
+    position: absolute;
+    height: 90vh;
+    width: 60vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: lightgray;
+    color: var(--main-theme-color);
+    text-align: center;
+    padding: 20px;
+}
+
+#scoreboard > h2 {
+    margin-bottom: 30px;
 }
