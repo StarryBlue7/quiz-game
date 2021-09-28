@@ -163,3 +163,8 @@ button {
 #scoreboard > h2 {
     margin-bottom: 30px;
 }
+
+#scoreboard > table {
+    width: 100%;
+
+}
