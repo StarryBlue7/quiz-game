@@ -1,11 +1,19 @@
-const timeLimit = [60, 40];
-const difficulty = ["Easy", "Hard"];
-
-const attemptPoints = [20, 10];
-const attemptsAllowed = attemptPoints.length;
-
-const timeLoss = 3;
-const timeMultiplier = 1;
+const mode = [
+    {
+        difficulty: "Easy",
+        timeLimit: 60,
+        attemptPoints: [20, 10], 
+        timeLoss: 3,
+        timeMultiplier: 2
+    },
+    {
+        difficulty: "Hard",
+        timeLimit: 45,
+        attemptPoints: [30],
+        timeLoss: 5,
+        timeMultiplier: 10
+    }
+]
 
 const questionSpeed = 500;
 
@@ -64,7 +72,7 @@ quizBox.addEventListener("click", function(event) {
     if (button.matches("button") && button.getAttribute("id") === "start") {
         startGame();
     } else if (button.matches("button") && button.getAttribute("id") === "save-score") {
-        let initials = prompt("Enter initials:").slice(0,2).toUpperCase();
+        let initials = prompt("Enter initials:").slice(0,3).toUpperCase();
         if (initials !== null) {
             saveScore(initials);
         }
@@ -78,6 +86,7 @@ quizBox.addEventListener("click", function(event) {
 
 function startGame() {
     bgMusic.play();
+    bgMusic.loop = true;
 
     score = 0;
     isWin = false;
@@ -90,7 +99,8 @@ function startGame() {
 };
 
 function setTimer() {
-    time = timeLimit[difficultyMode];
+    // time = timeLimit[difficultyMode];
+    time = mode[difficultyMode].timeLimit;
 };
 
 function randomOrder(array) {
@@ -106,7 +116,7 @@ function randomOrder(array) {
 };
 
 function startRound() {
-    attempts = attemptsAllowed;
+    attempts = mode[difficultyMode].attemptPoints.length;
     if (questionOrder[questionCounter] === undefined) {
         isWin = true;
     } else {
@@ -138,6 +148,27 @@ function startTimer() {
     }, 1000)
 };
 
+function writeQuestion(questionIndex) {
+    questionBox.textContent = quiz[category].questions[questionIndex].question;
+};
+
+function writeAnswers(questionIndex) {
+    let answerSet = quiz[category].questions[questionIndex].answers;
+    let answerOrder = randomOrder(answerSet);
+
+    answerOrder.forEach(function callbackFn(answerNumber) { 
+        let li = document.createElement("li");
+        li.textContent = answerSet[answerNumber];
+        if (answerNumber === 0) {
+            li.setAttribute("data-check", "true");
+            li.setAttribute("id", "correct");
+        } else {
+            li.setAttribute("data-check", "false");
+        }
+        answerBox.appendChild(li);
+    })
+};
+
 answerBox.addEventListener("click", function(event) {
     event.stopPropagation();
     let dataCheck = event.target.getAttribute("data-check");
@@ -150,7 +181,9 @@ answerBox.addEventListener("click", function(event) {
 
 function rightAnswer() {
     playing = false;
-    score += attemptPoints[attemptsAllowed - attempts];
+    const attemptsAllowed = mode[difficultyMode].attemptPoints.length;
+    score += mode[difficultyMode].attemptPoints[attemptsAllowed - attempts]
+    // score += attemptPoints[attemptsAllowed - attempts];
 
     let bell = new Audio("./assets/sounds/rightBell.wav");
     bell.play();
@@ -161,7 +194,8 @@ function rightAnswer() {
 };
 
 function wrongAnswer() {
-    time -= timeLoss;
+    time -= mode[difficultyMode].timeLoss;
+    // time -= timeLoss;
 
     let buzzer = new Audio("./assets/sounds/wrongBuzzer2.wav");
     buzzer.play();
@@ -190,9 +224,11 @@ function revealAnswer() {
 
 function gameMessage(isCorrect) {
     if (isCorrect === true) {
-        message.innerText = "Correct! +" + attemptPoints[attemptsAllowed - attempts] + " pts!";
+        const attemptsAllowed = mode[difficultyMode].attemptPoints.length;
+        message.innerText = "Correct! +" + mode[difficultyMode].attemptPoints[attemptsAllowed - attempts] + " pts!";
+        // message.innerText = "Correct! +" + attemptPoints[attemptsAllowed - attempts] + " pts!";
     } else {
-        message.innerText = "Wrong! -" + timeLoss + "s"
+        message.innerText = "Wrong! -" + mode[difficultyMode].timeLoss + "s"
     }
     setTimeout(() => {
         message.innerText = " ";
@@ -211,29 +247,9 @@ function clearAnswers() {
     };
 }
 
-function writeQuestion(questionIndex) {
-    questionBox.textContent = quiz[category].questions[questionIndex].question;
-};
-
-function writeAnswers(questionIndex) {
-    let answerSet = quiz[category].questions[questionIndex].answers;
-    let answerOrder = randomOrder(answerSet);
-
-    answerOrder.forEach(function callbackFn(answerNumber) { 
-        let li = document.createElement("li");
-        li.textContent = answerSet[answerNumber];
-        if (answerNumber === 0) {
-            li.setAttribute("data-check", "true");
-            li.setAttribute("id", "correct");
-        } else {
-            li.setAttribute("data-check", "false");
-        }
-        answerBox.appendChild(li);
-    })
-};
-
 function winGame() {
-    let timeBonus = time * timeMultiplier;
+    let timeBonus = time * mode[difficultyMode].timeMultiplier;
+    // let timeBonus = time * timeMultiplier;
     score += timeBonus;
     message.innerText = "Time Bonus: " + timeBonus + " pts!"
 
@@ -256,6 +272,7 @@ function gameOver() {
 
 function endCard(isWin) {
     bgMusic.pause();
+    bgMusic.loop = false;
     bgMusic.currentTime = 0;
 
     let endMsg = document.createElement("h1");
@@ -348,7 +365,8 @@ function updateScores() {
 function saveScore(initials) {
     let newScore = {
         initials: initials,
-        difficulty: difficulty[difficultyMode],
+        // difficulty: difficulty[difficultyMode],
+        difficulty: mode[difficultyMode].difficulty,
         score: score
     }
     scoreList = JSON.parse(localStorage.getItem("scoreList"));
