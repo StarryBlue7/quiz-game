@@ -5,6 +5,12 @@
     --content-padding: 20px;
     --bordering: white solid 5px;
     --main-theme-color: rgb(0, 86, 156);
+    --show-font: gyparody, Garamond, Verdana, Geneva, Tahoma, sans-serif;
+}
+
+@font-face {
+    font-family: gyparody;
+    src: url(gyparody.ttf);
 }
 
 html {
@@ -27,10 +33,12 @@ body {
 
 h1 {
     font-size: 300%;
+    font-family: var(--show-font);
 }
 
 h2 {
     font-size: 200%;
+    font-family: var(--show-font);
 }
 
 a {
@@ -120,7 +128,7 @@ button {
     margin-bottom: 20px;
     color: var(--main-theme-color);
     background-color: lightgray;
-    font-family: inherit;
+    font-family: var(--show-font);
 }
 
 #answer-box {
