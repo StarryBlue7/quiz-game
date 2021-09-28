@@ -138,6 +138,10 @@ button {
     font-family: var(--show-font);
 }
 
+button:hover {
+    background-color: rgb(190, 190, 190);
+}
+
 #answer-box {
     list-style: inside upper-alpha;
     width: 100%;
@@ -148,13 +152,17 @@ button {
 }
 
 #answer-box > li {
-    width: 47%;
+    flex: 1 0 40%;
     border: white solid 5px;
     border-radius: 20px;
     padding: 5px;
     margin-bottom: 20px;
     font-size: 150%;
     text-align: left;
+}
+
+#answer-box > li:hover {
+    background-color: rgb(0, 69, 126);
 }
 
 #game-messages {
@@ -220,7 +228,8 @@ td {
     }
 
     #answer-box > li {
-        width: 100%;
+        flex: 1 0 90%;
+        margin-bottom: 5px;
     }
 }
 
