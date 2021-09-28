@@ -56,12 +56,19 @@ a {
 }
 
 header {
-    text-align: center;
     width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    text-align: center;
+}
+
+#theme {
+    display: inline-block;
 }
 
 main {
-    width: 70vw;
+    width: 50vw;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -185,4 +192,44 @@ th, tr {
 
 td {
     vertical-align: middle;
+}
+
+@media screen and (max-width: 1200px) {
+    main {
+        width: 70vw;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 18px;
+    }
+
+    main {
+        width: 85vw;
+    }
+
+    #view-high-scores, #message-box, #timer-box, #points-box {
+        flex: 1 1 20%;
+    }
+
+    #message-box {
+        height: 40px;
+        order: 1;
+        flex: 1 1 80%;
+    }
+
+    #answer-box > li {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    main {
+        width: 95vw;
+    }
+
+    body {
+        font-size: 16px;
+    }
 }
