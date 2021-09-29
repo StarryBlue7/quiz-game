@@ -47,6 +47,8 @@ function init() {
     setTimer();
     writeTime();
     writeRules();
+    showThemes();
+    showModes();
 };
 
 function writeTheme() {
@@ -62,10 +64,28 @@ function writeTime() {
 };
 
 function writeRules() {
-    questionBox.innerHTML = "<button id=\"start\" class=\"bordered\">Start</button>Click 'Start' for a new game!"
+    questionBox.innerHTML = "<button id=\"start\" class=\"bordered\">Start</button>Click 'Start' for a new game, or change the category or difficulty below!"; 
+};
+
+function showThemes() {
+    quiz.forEach(function callbackFn(theme, i) { 
+        let li = document.createElement("li");
+        li.textContent = theme.category;
+        li.setAttribute("data-theme", i);
+        answerBox.appendChild(li);
+    })
+};
+
+function showModes() {
+    mode.forEach(function callbackFn(setting, i) { 
+        let button = buildBtn(setting.difficulty, setting.difficulty, "bordered")
+        button.setAttribute("data-difficulty", i);
+        quizBox.appendChild(button);
+    })
 }
 
 viewScores.addEventListener("click", showScores);
+
 quizBox.addEventListener("click", function(event) {
     event.stopPropagation();
     let button = event.target;
@@ -75,12 +95,16 @@ quizBox.addEventListener("click", function(event) {
         let initials = prompt("Enter initials:").slice(0,3).toUpperCase();
         if (initials !== null) {
             saveScore(initials);
-        }
+        };
     } else if (button.matches("button") && button.getAttribute("id") === "restart") {
         clearEndCard();
         hideQuiz(false);
         init();
-    }
+    } else if (button.getAttribute("data-difficulty")) {
+        difficultyMode = button.getAttribute("data-difficulty");
+        console.log("Difficulty: " + difficultyMode);
+        writeRules();
+    };
     hideScoreboard(true);
 })
 
@@ -92,6 +116,9 @@ function startGame() {
     isWin = false;
     setTimer();
     hideQuiz(false);
+    clearAnswers();
+    clearEndCard();
+
     questionOrder = randomOrder(quiz[category].questions);
     questionCounter = 0;
     startTimer();
@@ -176,6 +203,10 @@ answerBox.addEventListener("click", function(event) {
         rightAnswer();
     } else if (playing === true && dataCheck == "false") {
         wrongAnswer();
+    } else if (event.target.getAttribute("data-theme")) {
+        category = event.target.getAttribute("data-theme");
+        console.log("Category: " + category);
+        writeTheme();
     }
 });
 
@@ -342,11 +373,12 @@ function updateScores() {
             return b.score - a.score;
         })
 
-        let scoreTable = "<table><tr><th>Initials</th><th>Difficulty</th><th>Score</th>"
+        let scoreTable = "<table><tr><th>Initials</th><th>Difficulty</th><th>Category</th><th>Score</th>"
         scoreList.forEach(function callbackFn(entry) {
             scoreTable += "<tr>";
             scoreTable += "<td>" + entry.initials + "</td>";
             scoreTable += "<td>" + entry.difficulty + "</td>";
+            scoreTable += "<td>" + entry.category + "</td>";
             scoreTable += "<td>" + entry.score + "</td>";
             scoreTable += "</tr>";
         })
@@ -367,6 +399,7 @@ function saveScore(initials) {
         initials: initials,
         // difficulty: difficulty[difficultyMode],
         difficulty: mode[difficultyMode].difficulty,
+        category: quiz[category].category,
         score: score
     }
     scoreList = JSON.parse(localStorage.getItem("scoreList"));
