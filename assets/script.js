@@ -22,7 +22,8 @@ var score;
 var attempts;
 var difficultyMode = 0;
 var playing = false;
-var isWin = false;
+var isWin;
+var isLose;
 var time;
 var showingHighScores = false;
 var questionOrder = [];
@@ -43,6 +44,8 @@ const bgMusic = new Audio("./assets/sounds/bgMusic.wav");
 function init() {
     writeTheme();
     score = 0;
+    isWin = false;
+    isLose = false;
     writePoints();
     setTimer();
     writeTime();
@@ -113,10 +116,12 @@ quizBox.addEventListener("click", function(event) {
 
 function startGame() {
     bgMusic.play();
+    bgMusic.volume = 0.1;
     bgMusic.loop = true;
 
     score = 0;
     isWin = false;
+    isLose = false;
     setTimer();
     hideQuiz(false);
     clearAnswers();
@@ -185,7 +190,9 @@ function writeQuestion(questionIndex) {
 function writeAnswers(questionIndex) {
     let answerSet = quiz[category].questions[questionIndex].answers;
     let answerOrder = randomOrder(answerSet);
-
+    if (isLose) {
+        return;
+    }
     answerOrder.forEach(function callbackFn(answerNumber) { 
         let li = document.createElement("li");
         li.textContent = answerSet[answerNumber];
@@ -221,6 +228,7 @@ function rightAnswer() {
 
     let bell = new Audio("./assets/sounds/rightBell.wav");
     bell.play();
+    bell.volume = 0.5;
 
     writePoints();
     gameMessage(true);
@@ -233,6 +241,7 @@ function wrongAnswer() {
 
     let buzzer = new Audio("./assets/sounds/wrongBuzzer2.wav");
     buzzer.play();
+    buzzer.volume = 0.5;
     
     gameMessage(false);
     if (attempts > 1) {
@@ -242,6 +251,7 @@ function wrongAnswer() {
 
         let fail = new Audio("./assets/sounds/failSound.wav");
         fail.play();
+        fail.volume = 0.5;
 
         revealAnswer();
     }
@@ -289,6 +299,7 @@ function winGame() {
 
     let winSound = new Audio("./assets/sounds/gameWin.wav");
     winSound.play();
+    winSound.volume = 0.5;
     
     hideQuiz(true);
     clearAnswers();
@@ -298,7 +309,9 @@ function winGame() {
 function gameOver() {
     let loseSound = new Audio("./assets/sounds/gameLose.wav");
     loseSound.play();
+    loseSound.volume = 0.5;
 
+    isLose = true;
     hideQuiz(true);
     clearAnswers();
     endCard(false);
@@ -414,6 +427,7 @@ function saveScore(initials) {
 
     let saveScore = new Audio("./assets/sounds/saveHS.wav");
     saveScore.play();
+    saveScore.volume = 0.7;
 }
 
 init();
