@@ -46,6 +46,7 @@ function init() {
     writePoints();
     setTimer();
     writeTime();
+    message.innerText = " "
     writeRules();
     showThemes();
     showModes();
@@ -64,7 +65,7 @@ function writeTime() {
 };
 
 function writeRules() {
-    questionBox.innerHTML = "<button id=\"start\" class=\"bordered\">Start</button>Click 'Start' for a new game, or change the category or difficulty below!"; 
+    questionBox.innerHTML = "<button id=\"start\" class=\"bordered\">Start</button><h3>You'll have " + mode[difficultyMode].attemptPoints.length + " attempt(s) per question and " + mode[difficultyMode].timeLimit + " seconds in total. Click 'Start' for a new game, or change the category or difficulty below!</h3>"; 
 };
 
 function showThemes() {
@@ -103,6 +104,8 @@ quizBox.addEventListener("click", function(event) {
     } else if (button.getAttribute("data-difficulty")) {
         difficultyMode = button.getAttribute("data-difficulty");
         console.log("Difficulty: " + difficultyMode);
+        setTimer();
+        writeTime();
         writeRules();
     };
     hideScoreboard(true);
