@@ -1,10 +1,10 @@
 const quiz = [
     {
-        "category": "JavaScript",
-        "questions": [
-            {
-                "question": "What is the command for printing to console?",
-                "answers": ["console.log()", "output.log()", "toConsole()", "console.out()"]
+        "category": "JavaScript",             // Category shown on category selection button
+        "questions": [                        // Question set object can accommodate any number of categories and questions per category
+            {                                 // Answer sets can be fewer than four answers, but more than four may exceed the UI limits for some viewports
+                "question": "What is the command for printing to console?",                         // Correct answer in first position of every answer set
+                "answers": ["console.log()", "output.log()", "toConsole()", "console.out()"]        // Answers are randomly shuffled when displayed
             },
             {
                 "question": "Which of these does not declare a variable?",

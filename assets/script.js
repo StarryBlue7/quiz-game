@@ -1,10 +1,11 @@
+// Difficulty modes object, can accept any number of different difficulty modes
 const mode = [
     {
         difficulty: "Easy",
-        timeLimit: 60,
-        attemptPoints: [20, 10], 
-        timeLoss: 3,
-        timeMultiplier: 2
+        timeLimit: 60,              // Total time in seconds
+        attemptPoints: [20, 10],    // Points awarded per attempt, total allowed attempts determined by number of entries
+        timeLoss: 3,                // Time in seconds deducted from clock for wrong answers
+        timeMultiplier: 2           // Time bonus multiplier at end of game
     },
     {
         difficulty: "Hard",
@@ -14,8 +15,6 @@ const mode = [
         timeMultiplier: 10
     }
 ]
-
-const questionSpeed = 500;
 
 var category = 0;
 var score;
@@ -41,6 +40,7 @@ const answerBox = document.getElementById("answer-box");
 const scoreboard = document.getElementById("scoreboard");
 const bgMusic = new Audio("./assets/sounds/bgMusic.wav");
 
+// Runs on page load to set up main menu
 function init() {
     writeTheme();
     score = 0;
@@ -71,6 +71,7 @@ function writeRules() {
     questionBox.innerHTML = "<button id=\"start\" class=\"bordered\">Start</button><h3>You'll have " + mode[difficultyMode].attemptPoints.length + " attempt(s) per question and " + mode[difficultyMode].timeLimit + " seconds in total. Click 'Start' for a new game, or change the category or difficulty below!</h3>"; 
 };
 
+// Generate buttons for selecting quiz category
 function showThemes() {
     quiz.forEach(function callbackFn(theme, i) { 
         let li = document.createElement("li");
@@ -80,6 +81,7 @@ function showThemes() {
     })
 };
 
+// Generate buttons for changing difficulty setting
 function showModes() {
     mode.forEach(function callbackFn(setting, i) { 
         let button = buildBtn(setting.difficulty, setting.difficulty, "bordered")
@@ -90,6 +92,7 @@ function showModes() {
 
 viewScores.addEventListener("click", showScores);
 
+// Event listener for most dynamically generated buttons
 quizBox.addEventListener("click", function(event) {
     event.stopPropagation();
     let button = event.target;
@@ -133,11 +136,12 @@ function startGame() {
     startRound();
 };
 
+// Set timer according to difficulty mode
 function setTimer() {
-    // time = timeLimit[difficultyMode];
     time = mode[difficultyMode].timeLimit;
 };
 
+// Random array generator for order of questions and answers
 function randomOrder(array) {
     let randomArray = [];
     for (let i = 0; i < array.length; i++) {
@@ -150,6 +154,7 @@ function randomOrder(array) {
     return randomArray;
 };
 
+// Begin each question round
 function startRound() {
     attempts = mode[difficultyMode].attemptPoints.length;
     if (questionOrder[questionCounter] === undefined) {
@@ -163,12 +168,12 @@ function startRound() {
     }
 };
 
+// Game timer
 function startTimer() {
     const runTimer = setInterval(() => {
         if (playing === true) {
             time--;
         }
-
         writeTime();
 
         if(time >= 0 && isWin) {
@@ -183,6 +188,7 @@ function startTimer() {
     }, 1000)
 };
 
+// Display question and associated set of answers
 function writeQuestion(questionIndex) {
     questionBox.textContent = quiz[category].questions[questionIndex].question;
 };
@@ -206,6 +212,7 @@ function writeAnswers(questionIndex) {
     })
 };
 
+// Check if clicked answer is correct or incorrect
 answerBox.addEventListener("click", function(event) {
     event.stopPropagation();
     let dataCheck = event.target.getAttribute("data-check");
@@ -220,11 +227,11 @@ answerBox.addEventListener("click", function(event) {
     }
 });
 
+// Award points for correct answer, based on attempt number
 function rightAnswer() {
     playing = false;
     const attemptsAllowed = mode[difficultyMode].attemptPoints.length;
     score += mode[difficultyMode].attemptPoints[attemptsAllowed - attempts]
-    // score += attemptPoints[attemptsAllowed - attempts];
 
     let bell = new Audio("./assets/sounds/rightBell.wav");
     bell.play();
@@ -235,9 +242,9 @@ function rightAnswer() {
     revealAnswer();
 };
 
+// Deduct time for wrong answer, end round if all attempts used and show correct answer
 function wrongAnswer() {
     time -= mode[difficultyMode].timeLoss;
-    // time -= timeLoss;
 
     let buzzer = new Audio("./assets/sounds/wrongBuzzer2.wav");
     buzzer.play();
@@ -257,6 +264,7 @@ function wrongAnswer() {
     }
 };
 
+// Show correct answer in green
 function revealAnswer() {
     let correctAnswer = document.getElementById("correct");
     correctAnswer.style.backgroundColor = "green";
@@ -266,11 +274,11 @@ function revealAnswer() {
     }, 2000);
 }
 
+// Display game messages for point awards or time deductions
 function gameMessage(isCorrect) {
     if (isCorrect === true) {
         const attemptsAllowed = mode[difficultyMode].attemptPoints.length;
         message.innerText = "Correct! +" + mode[difficultyMode].attemptPoints[attemptsAllowed - attempts] + " pts!";
-        // message.innerText = "Correct! +" + attemptPoints[attemptsAllowed - attempts] + " pts!";
     } else {
         message.innerText = "Wrong! -" + mode[difficultyMode].timeLoss + "s"
     }
@@ -279,6 +287,7 @@ function gameMessage(isCorrect) {
     }, 2000);
 }
 
+// Reset board for next round
 function endRound() {
     questionBox.textContent = " ";
     clearAnswers();
@@ -291,9 +300,9 @@ function clearAnswers() {
     };
 }
 
+// Add time bonus when all questions complete before time ends
 function winGame() {
     let timeBonus = time * mode[difficultyMode].timeMultiplier;
-    // let timeBonus = time * timeMultiplier;
     score += timeBonus;
     message.innerText = "Time Bonus: " + timeBonus + " pts!"
 
@@ -306,6 +315,7 @@ function winGame() {
     endCard(true);
 }
 
+// Game over for time running out
 function gameOver() {
     let loseSound = new Audio("./assets/sounds/gameLose.wav");
     loseSound.play();
@@ -317,6 +327,7 @@ function gameOver() {
     endCard(false);
 };
 
+// End card shows game results
 function endCard(isWin) {
     bgMusic.pause();
     bgMusic.loop = false;
@@ -349,6 +360,7 @@ function clearEndCard() {
     };
 }
 
+// Build dynamically generated buttons
 function buildBtn(text, id, addClass) {
     let btn = document.createElement("button");
     btn.innerText = text;
@@ -357,6 +369,7 @@ function buildBtn(text, id, addClass) {
     return btn;
 }
 
+// Hide quiz windows for end card
 function hideQuiz(toHidden) {
     if (toHidden === true) {
         questionBox.classList.add("hidden");
@@ -367,6 +380,7 @@ function hideQuiz(toHidden) {
     } 
 };
 
+// Hide/show high score list
 function hideScoreboard(toHidden) {
     if (toHidden === true) {
         scoreboard.classList.add("hidden");
@@ -381,6 +395,7 @@ function showScores(event) {
     updateScores();
 };
 
+// Generate table of high scores from local storage JSON file
 function updateScores() {
     scoreboard.innerHTML = "<h2>High Scores!<h2>";
     scoreList = JSON.parse(localStorage.getItem("scoreList"));
@@ -410,10 +425,10 @@ function updateScores() {
     localStorage.setItem("scoreList", JSON.stringify(scoreList));
 }
 
+// Add new high score to high scores list and local storage file
 function saveScore(initials) {
     let newScore = {
         initials: initials,
-        // difficulty: difficulty[difficultyMode],
         difficulty: mode[difficultyMode].difficulty,
         category: quiz[category].category,
         score: score

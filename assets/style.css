@@ -31,26 +31,25 @@ body {
     gap: 1vh;
 }
 
+/* Title text */
 h1 {
     font-size: 300%;
     font-family: var(--show-font);
 }
 
+/* Question text */
 h2 {
     font-size: 200%;
     font-family: var(--show-font);
 }
 
-a {
-    text-decoration: none;
-    color: var(--color-text);
-}
-
+/* Main design theme */
 .bordered {
     border: var(--bordering);
     border-radius: 20px;
 }
 
+/* Hides quiz elements */
 .hidden {
     display: none;
 }
@@ -85,6 +84,7 @@ main {
     gap: 10px;
 }
 
+/* Game HUD elements */
 #view-high-scores, #message-box, #timer-box, #points-box {
     padding: 5px;
     text-align: center;
@@ -132,11 +132,11 @@ main {
     padding-top: 10px;
 }
 
+/* Generated buttons */
 button {
     display: block;
     font-size: 150%;
     width: 100%;
-    /* margin-bottom: 10px; */
     color: var(--main-theme-color);
     background-color: lightgray;
     font-family: var(--show-font);
@@ -156,12 +156,12 @@ button:hover {
     gap: 10px;
 }
 
+/* Generated quiz answers */
 #answer-box > li {
     flex: 1 0 40%;
     border: white solid 5px;
     border-radius: 20px;
     padding: 7px;
-    /* margin-bottom: 20px; */
     font-size: 150%;
     text-align: left;
 }
@@ -193,6 +193,7 @@ button:hover {
     margin-bottom: 30px;
 }
 
+/* Scoreboard table formatting */
 #scoreboard > table {
     width: 100%;
     margin-bottom: 50px;
@@ -207,6 +208,7 @@ td {
     vertical-align: middle;
 }
 
+/* UI scaling for different viewport sizes */
 @media screen and (max-width: 1200px) {
     main {
         width: 70vw;
