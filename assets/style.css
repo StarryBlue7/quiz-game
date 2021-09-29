@@ -128,6 +128,10 @@ main {
     flex: 0 1 50%;
 }
 
+#question-box > h3 {
+    padding-top: 10px;
+}
+
 button {
     display: block;
     font-size: 150%;
@@ -207,6 +211,10 @@ td {
     main {
         width: 70vw;
     }
+
+    #question-box > h3 {
+        font-size: 85%;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -237,6 +245,10 @@ td {
 @media screen and (max-width: 480px) {
     main {
         width: 95vw;
+    }
+
+    #question-box > h3 {
+        font-size: 60%;
     }
 
     body {
